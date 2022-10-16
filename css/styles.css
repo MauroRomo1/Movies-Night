@@ -1,0 +1,13 @@
+.title-nav {
+  font-family: "Bebas Neue", cursive;
+  font-size: 2rem;
+}
+
+header {
+  position: sticky;
+  top: 0;
+}
+
+main {
+  min-height: 100vh;
+}

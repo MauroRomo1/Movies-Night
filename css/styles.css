@@ -6,8 +6,17 @@
 header {
   position: sticky;
   top: 0;
+  z-index: 9999;
+  background-color: #1c1c1c;
 }
 
 main {
   min-height: 100vh;
+  background-color: #e3e3e3;
+}
+/* Estilos del login */
+.contenedor_login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

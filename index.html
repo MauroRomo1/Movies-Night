@@ -81,6 +81,41 @@
     <footer>
       <h1 class="text-center">Soy un footer re loco 😜</h1>
     </footer>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="usuarioModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" id="modalUser">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              Usuario logueado
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="card_avatar">
+            <h5 class="text-center">No hay un usuario logueado.</h5>
+            <!-- informacion del usurio -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="logout" class="btn btn-secondary">
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Script de bootrap -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

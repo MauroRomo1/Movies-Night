@@ -6,7 +6,7 @@
 header {
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 999;
   background-color: #1c1c1c;
 }
 
@@ -26,4 +26,13 @@ main {
   height: 50px;
   object-fit: cover;
   border-radius: 100%;
+}
+
+/* Estilo del modal de usuario logueado */
+#modalUser {
+  z-index: 1000;
+}
+#avatarModal {
+  object-fit: cover;
+  border-radius: 200%;
 }

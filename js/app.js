@@ -5,6 +5,7 @@ class Usuario {
     username,
     email,
     password,
+    imagen,
     activo = true,
     rol = "user_rol"
   ) {
@@ -13,6 +14,7 @@ class Usuario {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.imagen = imagen;
     this.activo = activo;
     this.rol = rol;
   }
@@ -25,7 +27,8 @@ let user1 = new Usuario(
   "Gonzalez",
   "pgonzalez",
   "pedritobueno@gmail.com",
-  "pp123456"
+  "pp123456",
+  "https://thumbs.dreamstime.com/b/cute-pop-corn-popcorn-character-red-bucket-box-cinema-snack-vector-illustration-cartoon-icon-221921666.jpg"
 );
 
 const agregarUsuario = function (user) {
@@ -50,6 +53,7 @@ const validarDatos = function () {
         email: validar_email.email,
         username: validar_email.username,
         rol: validar_email.rol,
+        avatar: validar_email.imagen,
       };
 
       localStorage.setItem("usuario", JSON.stringify(datos));

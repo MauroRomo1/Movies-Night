@@ -27,6 +27,7 @@ main {
   object-fit: cover;
   border-radius: 100%;
 }
+/* ====================== */
 
 /* Estilo del modal de usuario logueado */
 #modalUser {
@@ -36,3 +37,12 @@ main {
   object-fit: cover;
   border-radius: 200%;
 }
+/* ==================================== */
+
+/* Estilos de registo */
+
+#portadaRegistro {
+  object-fit: cover;
+  max-height: 170px;
+}
+/* ================== */

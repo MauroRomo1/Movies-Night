@@ -31,8 +31,8 @@ const modificarNavbar = function () {
           aria-expanded="false"
         >
           <img
-            src="${usuario.avatar}"
-            alt=""
+            src="../images/avatares/${usuario.avatar}.jpg"
+            alt="avatar"
             id="avatar"
           />
         </a>
@@ -61,7 +61,7 @@ let estructuraAvatar = `
               <div class="row g-0">
                 <div class="col-md-4">
                   <img
-                    src="${usuario.avatar}"
+                    src="../images/avatares/${usuario.avatar}.jpg"
                     class="img-fluid"
                     id="avatarModal"
                     alt="avatar"

@@ -6,6 +6,7 @@ class Usuario {
     email,
     password,
     imagen,
+    listaPeliculas = [],
     activo = true,
     rol = "user_rol"
   ) {
@@ -15,28 +16,79 @@ class Usuario {
     this.email = email;
     this.password = password;
     this.imagen = imagen;
+    this.listaPeliculas = listaPeliculas;
     this.activo = activo;
     this.rol = rol;
   }
 }
 
-let usuarios = [];
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-let user1 = new Usuario(
-  "Pedrito",
-  "Gonzalez",
-  "pgonzalez",
-  "pedritobueno@gmail.com",
-  "pp123456",
-  "https://thumbs.dreamstime.com/b/cute-pop-corn-popcorn-character-red-bucket-box-cinema-snack-vector-illustration-cartoon-icon-221921666.jpg"
-);
+let forms = document.querySelectorAll("#formRegistro");
 
-const agregarUsuario = function (user) {
-  usuarios.push(user);
+// Loop over them and prevent submission
+Array.prototype.slice.call(forms).forEach(function (form) {
+  form.addEventListener(
+    "submit",
+    function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      } else {
+        event.preventDefault();
+        console.log("todo bien");
+        agregarUsuario();
+      }
+
+      form.classList.add("was-validated");
+    },
+    false
+  );
+});
+
+const agregarUsuario = function () {
+  let email = document.querySelector("#correo").value;
+  let password = document.querySelector("#password").value;
+  let nombre = document.querySelector("#nombre").value;
+  let apellido = document.querySelector("#apellido").value;
+  let username = document.querySelector("#username").value;
+  let avatarUsuario = document.querySelector("#avatarUsuario").value;
+
+  // Validar si el correo o el username ya existe
+  let validacion = validarUsario(email, username);
+
+  if (!validacion) {
+    usuarios.push(
+      new Usuario(nombre, apellido, username, email, password, avatarUsuario)
+    );
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    location.href = "../pages/login.html";
+  } else {
+    alert(
+      "Usuario o correo electrónico ya existe, inicie sesion con sus datos"
+    );
+    location.reload();
+  }
 };
 
-agregarUsuario(user1);
+// Funcion que valida si el correo o el username ya exiten para poder registrarse
+const validarUsario = function (correo, username) {
+  let checkEmail = usuarios.find(function (user) {
+    return user.email === correo;
+  });
 
+  let checkUsername = usuarios.find(function (user) {
+    return user.username === username;
+  });
+
+  if (checkEmail || checkUsername) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// Validamos los datos de logueo
 const validarDatos = function () {
   let inputEmail = document.querySelector("#input_email").value;
   let inputPassword = document.querySelector("#input_password").value;
@@ -54,6 +106,7 @@ const validarDatos = function () {
         username: validar_email.username,
         rol: validar_email.rol,
         avatar: validar_email.imagen,
+        listaPeliculas: validar_email.listaPeliculas,
       };
 
       localStorage.setItem("usuario", JSON.stringify(datos));

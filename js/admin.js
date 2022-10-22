@@ -1,3 +1,7 @@
+//traer usuario logueado
+let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
+
+// Traemos todos los usuarios registrados
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
 let contenidoTabla = document.querySelector("#cuerpoTabla");
@@ -7,6 +11,37 @@ let form = document.querySelector("#formulario");
 const myModal = new bootstrap.Modal("#updateModal", {
   keyboard: false,
 });
+
+// info admin logueado
+let adminContenedor = document.querySelector("#contendorAdminCard");
+
+let adminCard = `
+            <div class="card mb-3" style="max-width: 540px">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img
+                    src="../images/avatares/${usuario.avatar}.jpg"
+                    class="img-fluid"
+                    alt="${usuario.username}"
+                  />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">${usuario.username}</h5>
+                    <p class="card-text">
+                      ${usuario.email}
+                    </p>
+                    <p class="card-text">
+                      <small class="text-muted">${usuario.rol}</small>
+                    </p>
+                    <button id="volverInicio" class="btn btn-primary">Volver al inicio</button>
+                    <button id="logout" class="btn btn-secondary">Cerrar sesión</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+  `;
+adminContenedor.innerHTML = adminCard;
 
 let indiceUser = null;
 
@@ -28,10 +63,18 @@ const cargarTabla = function () {
             <td>${user.username}</td>
             <td>${user.rol}</td>
             <td>
-            <img id="avatar" src="../images/avatares/${user.imagen}.jpg" alt=${user.nombre} />
+            <img 
+            id="avatar" 
+            src="../images/avatares/${user.imagen}.jpg" 
+            alt=${user.nombre} />
+            </td>
+            <td>
+            ${user.activo === true ? "Activo" : "Desactivado"}
             </td>
             <td>
             <i class="fa fa-pencil-square-o fa-2x text-info m-2" aria-hidden="true" role="button" onclick="abrirModal(${index})"></i>
+            </td>
+            <td>
             <i class="fa fa-trash-o fa-2x text-danger m-2" aria-hidden="true" role="button" onclick="borrarUsuario(${index})"></i>
             </td>
         `;
@@ -104,3 +147,12 @@ const updateUsuario = function (e) {
 };
 
 cargarTabla();
+
+document.querySelector("#logout").addEventListener("click", function () {
+  localStorage.removeItem("usuario");
+  location.href = "../pages/login.html";
+});
+
+document.querySelector("#volverInicio").addEventListener("click", function () {
+  location.href = "../index.html";
+});

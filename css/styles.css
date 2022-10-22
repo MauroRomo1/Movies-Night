@@ -46,3 +46,13 @@ main {
   max-height: 170px;
 }
 /* ================== */
+
+/* Estilos de admin */
+#avatarModalAdmin {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 100%;
+}
+
+/* =============== */

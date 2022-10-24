@@ -27,8 +27,8 @@
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-dark navbar-expand-lg">
-        <div class="container d-flex justify-content-center">
+      <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+        <div class="container">
           <a class="navbar-brand title-nav" href="../index.html">
             <img
               src="../images/faviconAndLogo.png"
@@ -38,23 +38,62 @@
             />
             Movies Night
           </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="../index.html"
+                  >Inicio</a
+                >
+              </li>
+              <div
+                id="contenedor_botones"
+                class="d-flex justify-content-center"
+              >
+                <li class="nav-item">
+                  <a
+                    class="btn btn-outline-light me-1"
+                    href="../pages/login.html"
+                    >Iniciar sesion</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="btn btn-primary" href="../pages/registro.html"
+                    >Registrarse</a
+                  >
+                </li>
+              </div>
+            </ul>
+          </div>
         </div>
       </nav>
     </header>
     <main>
       <!-- Tabla de usuarios -->
       <div id="contenedor" class="container">
-        <!-- admin logueado -->
-        <div class="row">
-          <div
-            id="contendorAdminCard"
-            class="col mt-3 d-flex justify-content-center align-items-center"
-          ></div>
-        </div>
-        <!-- -------------- -->
         <div class="row">
           <div class="col mt-5 text-center">
             <h3 class="text-dark"><b>Administración</b></h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary my-3" type="button">
+              Administrar peliculas
+            </button>
           </div>
         </div>
         <div class="row">
@@ -116,6 +155,42 @@
       </div>
     </div>
     <!-- ---------------------------------------------- -->
+
+    <!-- Modal del usuario registrado -->
+    <div
+      class="modal fade"
+      id="usuarioModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" id="modalUser">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              Usuario logueado
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="card_avatar">
+            <!-- Info usuario logueado -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="logout" class="btn btn-secondary">
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------- -->
+
     <!-- Script de bootrap -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

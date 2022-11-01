@@ -55,4 +55,7 @@ main {
   border-radius: 100%;
 }
 
+textarea {
+  resize: none;
+}
 /* =============== */

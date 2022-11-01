@@ -1,21 +1,23 @@
 // Clase para crear las peliculas
 class Pelicula {
   constructor(
+    portada,
+    banner,
     id,
-    imagen,
-    imgBanner,
     nombre,
-    categoria,
     descripcion,
-    publicado = false
+    categoria,
+    publicada = false,
+    destacado = false
   ) {
+    this.portada = portada;
+    this.banner = banner;
     this.id = id;
-    this.imagen = imagen;
-    this.imgBanner = imgBanner;
     this.nombre = nombre;
-    this.categoria = categoria;
     this.descripcion = descripcion;
-    this.publicado = publicado;
+    this.categoria = categoria;
+    this.publicada = publicada;
+    this.destacado = destacado;
   }
 }
 
@@ -29,6 +31,22 @@ let peliculas = JSON.parse(localStorage.getItem("peliculas")) || [];
 let myModalUser = new bootstrap.Modal(document.getElementById("usuarioModal"), {
   keyboard: false,
 });
+
+// Modal 1
+const myModal1 = new bootstrap.Modal("#modal1", {
+  keyboard: false,
+});
+
+// Modal 2
+const myModal2 = new bootstrap.Modal("#modal2", {
+  keyboard: false,
+});
+
+//creo variable que guarda el id de la pelicula
+let indicePeli = null;
+
+// Tbody de las peliculas
+let contenedorTabla = document.querySelector("#cuerpoTabla");
 
 // Verificamos si el usuario esta logueado
 const usuarioRegistrado = function name() {
@@ -120,6 +138,247 @@ const CargarInfoModalUser = function () {
   }
 };
 CargarInfoModalUser();
+
+// agregamos la imagen que se puso en el input de portada
+const agregarImagenPortada = function (e) {
+  let inputPortada = document.querySelector("#inputPortadaPeli");
+
+  if (e.keyCode === 13) {
+    document.querySelector("#portadaImg").src = inputPortada.value;
+  }
+};
+
+// agregamos la imagen que se puso en el input de banner
+const agregarImagenBanner = function (e) {
+  let inputBanner = document.querySelector("#inputBannerPeli");
+
+  if (e.keyCode === 13) {
+    document.querySelector("#bannerImg").src = inputBanner.value;
+  }
+};
+
+//  Si el onerror de la imagen portada se activa
+const imgPortadaError = function () {
+  document.querySelector("#portadaImg").src =
+    "http://127.0.0.1:5500/images/error_img.png";
+  alert("Debe de cargar una URL de una imagen valida");
+  document.querySelector("#inputPortadaPeli").value = "";
+  return true;
+};
+
+//  Si el onerror de la imagen Banner se activa
+const imgBannerError = function () {
+  document.querySelector("#bannerImg").src =
+    "http://127.0.0.1:5500/images/error_imgBanner.png";
+  alert("Debe de cargar una URL de una imagen valida");
+  document.querySelector("#inputBannerPeli").value = "";
+  return true;
+};
+
+// Agregamos una nueva pelicula con los datos del formulario
+const agregarPelicula = function () {
+  let portada = document.querySelector("#inputPortadaPeli").value;
+  let banner = document.querySelector("#inputBannerPeli").value;
+  let id = new Date().getTime();
+  let nombre = document.querySelector("#namePeli").value;
+  let descripcion = document.querySelector("#descripcionPeli").value;
+  let categoria = document.querySelector("#categoriaPeli").value;
+  let publicada = document.querySelector("#publicadaPeli").checked;
+
+  let validar = peliculaExiste(portada, banner, nombre);
+
+  if (!validar) {
+    peliculas.push(
+      new Pelicula(
+        portada,
+        banner,
+        id,
+        nombre,
+        descripcion,
+        categoria,
+        publicada
+      )
+    );
+    localStorage.setItem("peliculas", JSON.stringify(peliculas));
+    limpiarCamposPeli();
+  } else {
+    alert(
+      "La pelicula que quiere cargar ya exite, por favor verifique los datos"
+    );
+  }
+};
+
+const limpiarCamposPeli = function () {
+  // Volvemos a poner las imagenes dafaut de portada y banner
+  document.querySelector("#portadaImg").src =
+    "http://127.0.0.1:5500/images/error_img.png";
+  document.querySelector("#bannerImg").src =
+    "http://127.0.0.1:5500/images/error_imgBanner.png";
+
+  // Limpiamos los campos de portada y banner
+  document.querySelector("#inputPortadaPeli").value = "";
+  document.querySelector("#inputBannerPeli").value = "";
+  // Limpiamos todo el resto que esta dentro del formulario
+  document.querySelector("#formPeli").reset();
+};
+
+const cargarTablaPelis = function () {
+  contenedorTabla.innerHTML = "";
+
+  peliculas.map(function (peli, index) {
+    let fila = document.createElement("tr");
+
+    let estructura = `
+            <td>${peli.id}</td>
+            <td><b>${peli.nombre}</b></td>
+            <td>${peli.descripcion}</td>
+            <td class="text-center">${peli.categoria}</td>
+            <td class="text-center">
+            ${
+              peli.publicada
+                ? `<input class="form-check-input" type="checkbox" role="button" onclick="publicarPeli(${index})" id="flexCheckChecked" checked>`
+                : `<input class="form-check-input" type="checkbox" role="button" onclick="publicarPeli(${index})" id="flexCheckChecked">`
+            }
+            </td>
+            <td>
+            <i class="fa fa-trash fa-2x text-danger" aria-hidden="true" role="button" onclick="borrarPelicula(${index})"></i>
+            </td>
+            <td>
+            ${
+              peli.destacado
+                ? `<i class="fa fa-star fa-2x text-warning" aria-hidden="true" role="button" onclick="marcarDestacado(${index})"></i>`
+                : `<i class="fa fa-star-o fa-2x text-warning" aria-hidden="true" role="button" onclick="marcarDestacado(${index})"></i>`
+            }
+            
+            </td>
+    `;
+    fila.innerHTML = estructura;
+    contenedorTabla.appendChild(fila);
+  });
+};
+
+cargarTablaPelis();
+// Verificamos que ya no extista una pelicula con la misma portada, banner o nombre
+const peliculaExiste = function (portada, banner, nombre) {
+  let checkPortada = peliculas.find(function (peli) {
+    return peli.portada === portada;
+  });
+
+  let checkBanner = peliculas.find(function (peli) {
+    return peli.banner === banner;
+  });
+
+  let checkNombre = peliculas.find(function (peli) {
+    return peli.nombre === nombre;
+  });
+
+  if (checkPortada || checkBanner || checkNombre) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const borrarPelicula = function (indice) {
+  let validar = confirm(
+    `¿Esta seguro que quieres eliminar la pelicula ${peliculas[indice].nombre}?`
+  );
+
+  if (validar) {
+    peliculas.splice(indice, 1);
+    localStorage.setItem("peliculas", JSON.stringify(peliculas));
+    cargarTablaPelis();
+    alert("Pelicula eliminada con exito");
+  }
+};
+
+// Funcion que cambia el estado de publicado de la pelicula selecionada.
+const publicarPeli = function (indice) {
+  peliculas[indice].publicada = !peliculas[indice].publicada;
+  localStorage.setItem("peliculas", JSON.stringify(peliculas));
+  cargarTablaPelis();
+};
+
+const marcarDestacado = function (indice) {
+  let checkDestacado = peliculas.find(function (peli) {
+    return peli.destacado;
+  });
+  console.log(checkDestacado);
+  if (checkDestacado) {
+    alert("Ya hay una pelicula marcada como favorita");
+    let confirmar = confirm(
+      "¿Le gustaria desmarcar la que ya esta marcada y marcar esta?"
+    );
+    if (confirmar) {
+      checkDestacado.destacado = false;
+      peliculas[indice].destacado = true;
+      localStorage.setItem("peliculas", JSON.stringify(peliculas));
+      cargarTablaPelis();
+    }
+  } else {
+    peliculas[indice].destacado = true;
+    localStorage.setItem("peliculas", JSON.stringify(peliculas));
+    cargarTablaPelis();
+  }
+};
+
+const existePeliDestacada = function () {
+  let checkDestacado = peliculas.find(function (peli) {
+    return peli.destacado;
+  });
+
+  if (checkDestacado) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// Si presionamos el boton de nueva pelicula
+document.querySelector("#nuevaPeli").addEventListener("click", function () {
+  myModal1.show();
+});
+
+// Si presionamos el boton en el segundo modal de volver atrás
+document
+  .querySelector("#volverAlModal1")
+  .addEventListener("click", function () {
+    myModal2.hide();
+    myModal1.show();
+  });
+
+// Si presionamos el boton de nueva pelicula para continuar
+document
+  .querySelector("#continuarModal")
+  .addEventListener("click", function () {
+    let campoPortada = document.querySelector("#inputPortadaPeli").value;
+    let campoBanner = document.querySelector("#inputBannerPeli").value;
+    if (!campoPortada || !campoBanner) {
+      alert("Debes de completar todos los campos para continuar");
+    } else if (imgPortadaError === true || imgBannerError === true) {
+      alert("Debes de darle enter en los imput para previsualizar");
+    } else {
+      myModal1.hide();
+      myModal2.show();
+    }
+  });
+
+// Si presionamos enter en el input de portada
+document
+  .querySelector("#inputPortadaPeli")
+  .addEventListener("keydown", agregarImagenPortada);
+
+// Si presionamos enter en el input de banner
+document
+  .querySelector("#inputBannerPeli")
+  .addEventListener("keydown", agregarImagenBanner);
+
+// Si presionamos el boton para enviar el formulario
+document.querySelector("#formPeli").addEventListener("submit", function (e) {
+  e.preventDefault();
+  agregarPelicula();
+  location.reload();
+});
 
 //Deslogueo de la pagina
 document.querySelector("#logout").addEventListener("click", function () {

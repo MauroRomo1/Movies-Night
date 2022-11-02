@@ -1,6 +1,9 @@
 // Traemos la informacion del usuario que tenemos en el localStorage.
 let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
 
+// Traemos todas las peliculas que exiten
+let peliculas = JSON.parse(localStorage.getItem("peliculas")) || null;
+
 //capturamos el modal que usamos para mostrar el usuario logueado.
 let myModalUser = new bootstrap.Modal(document.getElementById("usuarioModal"), {
   keyboard: false,
@@ -14,7 +17,6 @@ const usuarioRegistrado = function name() {
     return true;
   }
 };
-console.log(usuarioRegistrado());
 
 // Modificamos el navbar segun si el usuario esta logueado o no.
 const modificarNavbar = function () {
@@ -81,6 +83,38 @@ let estructuraAvatar = `
 
 usuarioModal.innerHTML = estructuraAvatar;
 // ======================================================================== //
+
+// Funcion que muestra la pelicula destacada en el carousel de destacado
+const mostrarDestacado = function () {
+  let peliDetacada = peliculas.find(function (peli) {
+    return peli.destacado === true;
+  });
+
+  console.log(peliDetacada);
+
+  if (peliDetacada) {
+    let contenedorDestacado = document.querySelector("#destacado");
+
+    // Remplazamos los valores predefinos por los valores de la peli destacada
+    document.querySelector("#carouselImgDestacado").src = peliDetacada.banner;
+    document.querySelector("#tituloCarousel").innerHTML = peliDetacada.nombre;
+    document.querySelector("#textoCarousel").innerHTML =
+      peliDetacada.descripcion;
+
+    // Agregamos el ancla que nos redirige al trailer de la pelicula en Youtube
+    let contenedorBoton = document.createElement("div");
+    contenedorBoton.classList = "mb-3";
+    let estructuraBoton = `
+    <a class="btn btn-primary" href="https://www.youtube.com/" target="_blank">
+      <i class="fa fa-play-circle" aria-hidden="true"></i>
+      Ver el trailer
+     </a>`;
+    contenedorBoton.innerHTML = estructuraBoton;
+
+    contenedorDestacado.appendChild(contenedorBoton);
+  }
+};
+mostrarDestacado();
 
 //Deslogueo de la pagina
 document.querySelector("#logout").addEventListener("click", function () {

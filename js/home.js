@@ -1,8 +1,36 @@
 // Traemos la informacion del usuario que tenemos en el localStorage.
 let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
 
-// Traemos todas las peliculas que exiten
+// Traemos todas las peliculas que esten publicadas
 let peliculas = JSON.parse(localStorage.getItem("peliculas")) || null;
+
+peliculas = peliculas.filter(function (peli) {
+  return peli.publicada;
+});
+
+// guardamos la pelicula destacada si es que existe alguna, sino null
+let peliDetacada =
+  peliculas.find(function (peli) {
+    return peli.destacado === true;
+  }) || null;
+
+// Guardamos las peliculas de categoria Terror
+let pelisTerror =
+  peliculas.filter(function (peli) {
+    return peli.categoria === "Terror";
+  }) || null;
+
+// Guardamos las peliculas de categoria Accion
+let pelisAccion =
+  peliculas.filter(function (peli) {
+    return peli.categoria === "Accion";
+  }) || null;
+
+// Guardamos las peliculas de categoria Animadas
+let pelisAnimadas =
+  peliculas.filter(function (peli) {
+    return peli.categoria === "Animada";
+  }) || null;
 
 //capturamos el modal que usamos para mostrar el usuario logueado.
 let myModalUser = new bootstrap.Modal(document.getElementById("usuarioModal"), {
@@ -42,8 +70,8 @@ const modificarNavbar = function () {
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
           <li><a class="dropdown-item" href="#" id="verUsuario">Perfil</a></li>
           ${
-            usuario.rol === "admin_rol"
-              ? '<li><a class="dropdown-item" href="#">Administracion</a></li>'
+            usuario.rol === "admin"
+              ? '<li><a class="dropdown-item" href="../pages/adminUsuarios.html">Administracion</a></li>'
               : '<li><a class="dropdown-item" href="#">My lista</a></li>'
           }
         </ul>
@@ -86,12 +114,6 @@ usuarioModal.innerHTML = estructuraAvatar;
 
 // Funcion que muestra la pelicula destacada en el carousel de destacado
 const mostrarDestacado = function () {
-  let peliDetacada = peliculas.find(function (peli) {
-    return peli.destacado === true;
-  });
-
-  console.log(peliDetacada);
-
   if (peliDetacada) {
     let contenedorDestacado = document.querySelector("#destacado");
 
@@ -116,6 +138,49 @@ const mostrarDestacado = function () {
 };
 mostrarDestacado();
 
+// Funcion que comprueba si hay peliculas de la categoria que le pasamos como paramentro
+const hayPeliCategoria = function (peliCategoria) {
+  if (peliCategoria.length === 0) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const cargarContenidoCategorias = function (pelisCategoria) {
+  let cotenidoCategoriaTerror = document.querySelector("#carouselTerrorLista");
+  pelisCategoria.map(function (peli, index) {
+    let elemento = document.createElement("div");
+    elemento.classList.add("carousel__elemento");
+    let elementoContendio = `
+                    <a href="#" class="text-dark text-decoration-none">
+                      <img
+                        class"imgCategoria"
+                        src="${peli.portada}"
+                        alt="${peli.nombre} portada"
+                      />
+                      <p><b>${peli.nombre}</b></p>
+                    </a>
+    `;
+    elemento.innerHTML = elementoContendio;
+    cotenidoCategoriaTerror.appendChild(elemento);
+  });
+};
+
+const cargarPelisTerror = function () {
+  let validacion = hayPeliCategoria(pelisTerror);
+
+  if (!validacion) {
+    let fila = document.querySelector("#carouselTerror");
+    let titulo = `
+    <h4 class="text-center"><b>No hay peliculas de esta categoria.</b></h4>
+    `;
+    fila.innerHTML = titulo;
+  } else {
+    cargarContenidoCategorias(pelisTerror);
+  }
+};
+cargarPelisTerror();
 //Deslogueo de la pagina
 document.querySelector("#logout").addEventListener("click", function () {
   localStorage.removeItem("usuario");
@@ -125,4 +190,36 @@ document.querySelector("#logout").addEventListener("click", function () {
 //Si hacemos click en el boton para ver perfil
 document.querySelector("#verUsuario").addEventListener("click", function () {
   myModalUser.show();
+});
+
+window.addEventListener("load", function () {
+  new Glider(document.querySelector(".carousel__lista"), {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+
+    dots: ".carousel__indicadores",
+    arrows: {
+      prev: ".carousel__anterior",
+      next: ".carousel__siguiente",
+    },
+    responsive: [
+      {
+        // screens greater than >= 450px
+        breakpoint: 450,
+        settings: {
+          // Set to `auto` and provide item width to adjust to viewport
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        // screens greater than >= 800px
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+    ],
+  });
 });

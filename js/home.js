@@ -37,6 +37,14 @@ let myModalUser = new bootstrap.Modal(document.getElementById("usuarioModal"), {
   keyboard: false,
 });
 
+//Capturamos el modal que usamos para mostrar la informacion de la pelicula
+let myModalPeli = new bootstrap.Modal(
+  document.getElementById("modalInfoPeli"),
+  {
+    keyboard: false,
+  }
+);
+
 // Verificamos si el usuario esta logueado
 const usuarioRegistrado = function name() {
   if (!usuario) {
@@ -147,9 +155,9 @@ const hayPeliCategoria = function (peliCategoria) {
   }
 };
 
-const cargarContenidoCategorias = function (pelisCategoria) {
-  let cotenidoCategoriaTerror = document.querySelector("#carouselTerrorLista");
-  pelisCategoria.map(function (peli, index) {
+const cargarContenidoCategorias = function (pelisCategoria, id) {
+  let cotenidoCategoria = document.querySelector(`#${id}`);
+  pelisCategoria.map(function (peli) {
     let elemento = document.createElement("div");
     elemento.classList.add("carousel__elemento");
     let elementoContendio = `
@@ -163,7 +171,7 @@ const cargarContenidoCategorias = function (pelisCategoria) {
                     </a>
     `;
     elemento.innerHTML = elementoContendio;
-    cotenidoCategoriaTerror.appendChild(elemento);
+    cotenidoCategoria.appendChild(elemento);
   });
 };
 
@@ -173,14 +181,48 @@ const cargarPelisTerror = function () {
   if (!validacion) {
     let fila = document.querySelector("#carouselTerror");
     let titulo = `
-    <h4 class="text-center"><b>No hay peliculas de esta categoria.</b></h4>
+    <h4 class="text-center mb-4"><b>No hay peliculas de esta categoria.</b></h4>
     `;
     fila.innerHTML = titulo;
   } else {
-    cargarContenidoCategorias(pelisTerror);
+    let id = document.querySelector("#carouselTerrorLista").id;
+    cargarContenidoCategorias(pelisTerror, id);
   }
 };
 cargarPelisTerror();
+
+const cargarPelisAccion = function () {
+  let validacion = hayPeliCategoria(pelisAccion);
+
+  if (!validacion) {
+    let fila = document.querySelector("#carouselAccion");
+    let titulo = `
+    <h4 class="text-center mb-4"><b>No hay peliculas de esta categoria.</b></h4>
+    `;
+    fila.innerHTML = titulo;
+  } else {
+    let id = document.querySelector("#carouselAccionLista").id;
+    cargarContenidoCategorias(pelisAccion, id);
+  }
+};
+cargarPelisAccion();
+
+const cargarPelisAnimada = function () {
+  let validacion = hayPeliCategoria(pelisAnimadas);
+
+  if (!validacion) {
+    let fila = document.querySelector("#carouselAnimada");
+    let titulo = `
+    <h4 class="text-center mb-4"><b>No hay peliculas de esta categoria.</b></h4>
+    `;
+    fila.innerHTML = titulo;
+  } else {
+    let id = document.querySelector("#carouselAnimadaLista").id;
+    cargarContenidoCategorias(pelisAnimadas, id);
+  }
+};
+cargarPelisAnimada();
+
 //Deslogueo de la pagina
 document.querySelector("#logout").addEventListener("click", function () {
   localStorage.removeItem("usuario");
@@ -192,15 +234,14 @@ document.querySelector("#verUsuario").addEventListener("click", function () {
   myModalUser.show();
 });
 
+// Categoria Terror
 window.addEventListener("load", function () {
-  new Glider(document.querySelector(".carousel__lista"), {
+  new Glider(document.querySelector("#carouselTerrorLista"), {
     slidesToShow: 1,
     slidesToScroll: 1,
-
-    dots: ".carousel__indicadores",
     arrows: {
-      prev: ".carousel__anterior",
-      next: ".carousel__siguiente",
+      prev: ".carouselTerror__anterior",
+      next: ".carouselTerror__siguiente",
     },
     responsive: [
       {
@@ -216,10 +257,75 @@ window.addEventListener("load", function () {
         // screens greater than >= 800px
         breakpoint: 800,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 3,
+          slidesToScroll: 3,
         },
       },
     ],
   });
 });
+// ----------------------------------------------------------------------------- //
+
+// Categoria Accion
+window.addEventListener("load", function () {
+  new Glider(document.querySelector("#carouselAccionLista"), {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: {
+      prev: ".carouselAccion__anterior",
+      next: ".carouselAccion__siguiente",
+    },
+    responsive: [
+      {
+        // screens greater than >= 450px
+        breakpoint: 450,
+        settings: {
+          // Set to `auto` and provide item width to adjust to viewport
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        // screens greater than >= 800px
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+    ],
+  });
+});
+// ----------------------------------------------------------------------------- //
+
+// Categoria Animadas
+window.addEventListener("load", function () {
+  new Glider(document.querySelector("#carouselAnimadaLista"), {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: {
+      prev: ".carouselAnimada__anterior",
+      next: ".carouselAnimada__siguiente",
+    },
+    responsive: [
+      {
+        // screens greater than >= 450px
+        breakpoint: 450,
+        settings: {
+          // Set to `auto` and provide item width to adjust to viewport
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        // screens greater than >= 800px
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+    ],
+  });
+});
+// ----------------------------------------------------------------------------- //

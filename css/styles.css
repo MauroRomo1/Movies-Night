@@ -107,7 +107,7 @@ main {
   right: -30px;
 }
 .carousel__elemento img {
-  width: 100%;
+  width: 90%;
   height: 380px;
 }
 .carousel__lista {
@@ -120,10 +120,10 @@ main {
 
 @media (max-width: 435px) {
   .carousel__anterior {
-    left: 0px;
+    left: -10px;
   }
   .carousel__siguiente {
-    right: 0px;
+    right: -10px;
   }
 }
 

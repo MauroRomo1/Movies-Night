@@ -81,7 +81,7 @@ const modificarNavbar = function () {
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
             <li><a class="dropdown-item" href="#" id="verUsuario">Perfil</a></li>
             ${
-              usuario.rol === "admin_rol"
+              usuario.rol === "Administrador"
                 ? '<li><a class="dropdown-item" href="#">Administracion</a></li>'
                 : '<li><a class="dropdown-item" href="#">My lista</a></li>'
             }
@@ -94,7 +94,7 @@ const modificarNavbar = function () {
 modificarNavbar();
 
 // Si el usuario tiene como rol "Usuario" se le renderiza un titulo de que no tiene permisos de estar en la pagina
-if (!usuario || usuario.rol === "user_rol") {
+if (!usuario || usuario.rol === "Usuario") {
   let contenedorMain = document.querySelector("#contenedor");
 
   let mensaje = `

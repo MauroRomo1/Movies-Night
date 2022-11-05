@@ -53,9 +53,9 @@ const modificarNavbar = function () {
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
           <li><a class="dropdown-item" href="#" id="verUsuario">Perfil</a></li>
           ${
-            usuario.rol === "admin_rol"
+            usuario.rol === "Administrador"
               ? '<li><a class="dropdown-item" href="#">Administracion</a></li>'
-              : '<li><a class="dropdown-item" href="#">My lista</a></li>'
+              : '<li><a class="dropdown-item" href="../pages/error404.html">My lista</a></li>'
           }
         </ul>
   </div>
@@ -65,7 +65,7 @@ const modificarNavbar = function () {
 };
 modificarNavbar();
 
-if (!usuario || usuario.rol === "user_rol") {
+if (!usuario || usuario.rol === "Usuario") {
   let contenedorMain = document.querySelector("#contenedor");
 
   let mensaje = `
@@ -171,8 +171,15 @@ const cargarDatosUser = function (indice) {
                   <input type="text" class="form-control" id="username"  value=${usuarios[indice].username} required>
                 </div>
                 <div class="mb-2">
-                <label><b>Rol</b></label>
-                  <input type="text" class="form-control" id="rol"  value=${usuarios[indice].rol} required>
+                <label for="rol"><b>Cambiar el rol</b></label>
+                  <select class="form-select" id="rol">
+                    <option selected disabled value=${usuarios[indice].rol}>${usuarios[indice].rol}</option>
+                    <option value="Usuario">Usuario</option>
+                    <option value="Administrador">Administrador</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Seleccione el un rol
+                  </div>
                 </div>
                 <div class="mb-2">
                 <label for="avatarUsuario"><b>Cambiar avatar</b></label>

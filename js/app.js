@@ -8,7 +8,7 @@ class Usuario {
     imagen,
     listaPeliculas = [],
     activo = true,
-    rol = "user_rol"
+    rol = "Usuario"
   ) {
     this.nombre = nombre;
     this.apellido = apellido;

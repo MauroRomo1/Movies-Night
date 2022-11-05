@@ -2,7 +2,7 @@
 let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
 
 // Traemos todas las peliculas que esten publicadas
-let peliculas = JSON.parse(localStorage.getItem("peliculas")) || null;
+let peliculas = JSON.parse(localStorage.getItem("peliculas")) || [];
 
 peliculas = peliculas.filter(function (peli) {
   return peli.publicada;
@@ -70,7 +70,7 @@ const modificarNavbar = function () {
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
           <li><a class="dropdown-item" href="#" id="verUsuario">Perfil</a></li>
           ${
-            usuario.rol === "admin"
+            usuario.rol === "Administrador"
               ? '<li><a class="dropdown-item" href="../pages/adminUsuarios.html">Administracion</a></li>'
               : '<li><a class="dropdown-item" href="../pages/error404.html">My lista</a></li>'
           }
@@ -180,7 +180,7 @@ const cargarPelisTerror = function () {
   if (!validacion) {
     let fila = document.querySelector("#carouselTerror");
     let titulo = `
-    <h4 class="text-center mb-4"><b>No hay peliculas de esta categoria.</b></h4>
+    <h4 class="text-center mb-5"><b>No hay peliculas de esta categoria.</b></h4>
     `;
     fila.innerHTML = titulo;
   } else {
@@ -196,7 +196,7 @@ const cargarPelisAccion = function () {
   if (!validacion) {
     let fila = document.querySelector("#carouselAccion");
     let titulo = `
-    <h4 class="text-center mb-4"><b>No hay peliculas de esta categoria.</b></h4>
+    <h4 class="text-center mb-5"><b>No hay peliculas de esta categoria.</b></h4>
     `;
     fila.innerHTML = titulo;
   } else {
@@ -212,7 +212,7 @@ const cargarPelisAnimada = function () {
   if (!validacion) {
     let fila = document.querySelector("#carouselAnimada");
     let titulo = `
-    <h4 class="text-center mb-4"><b>No hay peliculas de esta categoria.</b></h4>
+    <h4 class="text-center mb-5"><b>No hay peliculas de esta categoria.</b></h4>
     `;
     fila.innerHTML = titulo;
   } else {

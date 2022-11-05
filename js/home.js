@@ -37,14 +37,6 @@ let myModalUser = new bootstrap.Modal(document.getElementById("usuarioModal"), {
   keyboard: false,
 });
 
-//Capturamos el modal que usamos para mostrar la informacion de la pelicula
-let myModalPeli = new bootstrap.Modal(
-  document.getElementById("modalInfoPeli"),
-  {
-    keyboard: false,
-  }
-);
-
 // Verificamos si el usuario esta logueado
 const usuarioRegistrado = function name() {
   if (!usuario) {
@@ -80,7 +72,7 @@ const modificarNavbar = function () {
           ${
             usuario.rol === "admin"
               ? '<li><a class="dropdown-item" href="../pages/adminUsuarios.html">Administracion</a></li>'
-              : '<li><a class="dropdown-item" href="#">My lista</a></li>'
+              : '<li><a class="dropdown-item" href="../pages/error404.html">My lista</a></li>'
           }
         </ul>
   </div>
@@ -92,32 +84,39 @@ const modificarNavbar = function () {
 modificarNavbar();
 
 // Cargamos los datos del usuario logueado en el modal del navbar.
-let usuarioModal = document.querySelector("#card_avatar");
+if (usuario) {
+  let usuarioModal = document.querySelector("#card_avatar");
 
-let estructuraAvatar = `
-          <div class="card border-0 text-center" style="max-width: 540px">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img
-                    src="../images/avatares/${usuario.avatar}.jpg"
-                    class="img-fluid"
-                    id="avatarModal"
-                    alt="avatar"
-                  />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">${usuario.username}</h5>
-                    <p class="card-text">
-                      ${usuario.email}
-                    </p>
+  let estructuraAvatar = `
+            <div class="card border-0 text-center" style="max-width: 540px">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img
+                      src="../images/avatares/${usuario.avatar}.jpg"
+                      class="img-fluid"
+                      id="avatarModal"
+                      alt="avatar"
+                    />
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">${usuario.username}</h5>
+                      <p class="card-text">
+                        ${usuario.email}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-           </div>
-`;
+             </div>
+  `;
 
-usuarioModal.innerHTML = estructuraAvatar;
+  usuarioModal.innerHTML = estructuraAvatar;
+
+  //Si hacemos click en el boton para ver perfil
+  document.querySelector("#verUsuario").addEventListener("click", function () {
+    myModalUser.show();
+  });
+}
 // ======================================================================== //
 
 // Funcion que muestra la pelicula destacada en el carousel de destacado
@@ -227,11 +226,6 @@ cargarPelisAnimada();
 document.querySelector("#logout").addEventListener("click", function () {
   localStorage.removeItem("usuario");
   location.href = "./pages/login.html";
-});
-
-//Si hacemos click en el boton para ver perfil
-document.querySelector("#verUsuario").addEventListener("click", function () {
-  myModalUser.show();
 });
 
 // Categoria Terror

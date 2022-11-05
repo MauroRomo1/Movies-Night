@@ -134,7 +134,7 @@ const mostrarDestacado = function () {
     let contenedorBoton = document.createElement("div");
     contenedorBoton.classList = "mb-3";
     let estructuraBoton = `
-    <a class="btn btn-primary" href="https://www.youtube.com/" target="_blank">
+    <a class="btn btn-primary" href="../pages/error404.html">
       <i class="fa fa-play-circle" aria-hidden="true"></i>
       Ver el trailer
      </a>`;
@@ -160,7 +160,7 @@ const cargarContenidoCategorias = function (pelisCategoria, id) {
     let elemento = document.createElement("div");
     elemento.classList.add("carousel__elemento");
     let elementoContendio = `
-                    <a href="#" class="text-dark text-decoration-none">
+                    <a href="../pages/error404.html" class="text-dark text-decoration-none">
                       <img
                         class"imgCategoria"
                         src="${peli.portada}"
